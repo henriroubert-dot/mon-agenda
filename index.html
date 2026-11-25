@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#171923">
+  <meta name="description" content="Ton agenda personnel : calendrier, tâches, notes, habitudes et objectifs.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="style.css">
+  <title>Mon Agenda</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" id="todayLabel">TON ESPACE PERSONNEL</p>
+        <h1 id="greeting">Mon Agenda</h1>
+      </div>
+      <button class="icon-btn" id="themeToggle" aria-label="Changer de thème" title="Changer de thème">☼</button>
+    </header>
+
+    <main id="mainContent">
+      <section class="view active" id="view-home">
+        <div class="welcome-card">
+          <div><span class="eyebrow">VUE D’ENSEMBLE</span><h2 id="homeDate">Aujourd’hui</h2><p id="homeQuote">Une chose après l’autre.</p></div>
+          <div class="progress-ring" id="dayProgress"><strong id="progressValue">0%</strong><small>fait</small></div>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><span>À faire</span><strong id="statTodo">0</strong><small>tâches ouvertes</small></article>
+          <article class="stat-card"><span>Terminées</span><strong id="statDone">0</strong><small>tâches accomplies</small></article>
+          <article class="stat-card"><span>Échéances</span><strong id="statDue">0</strong><small>dans les 7 jours</small></article>
+        </div>
+        <div class="section-heading"><div><span class="eyebrow">TON PROGRAMME</span><h2>À ne pas oublier</h2></div><button class="text-btn" data-go="tasks">Tout voir →</button></div>
+        <div id="homeTasks" class="stack"></div>
+        <div class="section-heading"><div><span class="eyebrow">AUJOURD’HUI</span><h2>Événements</h2></div><button class="text-btn" data-action="add-event">＋ Ajouter</button></div>
+        <div id="homeEvents" class="stack"></div>
+        <div class="quick-grid">
+          <button class="quick-action" data-action="add-task"><b>＋</b><span>Nouvelle tâche</span></button>
+          <button class="quick-action" data-action="add-event"><b>▦</b><span>Événement</span></button>
+          <button class="quick-action" data-action="add-note"><b>✎</b><span>Note</span></button>
+          <button class="quick-action" data-action="add-expense"><b>€</b><span>Dépense</span></button>
+        </div>
+      </section>
+
+      <section class="view" id="view-calendar">
+        <div class="section-heading"><div><span class="eyebrow">PLANIFICATION</span><h2>Calendrier</h2></div><button class="primary-btn" data-action="add-event">＋ Événement</button></div>
+        <div class="calendar-toolbar">
+          <button class="icon-btn" id="prevMonth">‹</button><h3 id="calendarTitle"></h3><button class="icon-btn" id="nextMonth">›</button>
+          <button class="text-btn" id="todayBtn">Aujourd’hui</button>
+        </div>
+        <div class="segmented" id="calendarModes"><button class="selected" data-mode="month">Mois</button><button data-mode="week">Semaine</button><button data-mode="day">Jour</button></div>
+        <div id="calendarGrid" class="calendar-grid"></div>
+        <div class="section-heading"><div><span class="eyebrow">DATE SÉLECTIONNÉE</span><h2 id="selectedDateTitle"></h2></div><button class="text-btn" data-action="add-event">＋</button></div>
+        <div id="selectedDateItems" class="stack"></div>
+      </section>
+
+      <section class="view" id="view-tasks">
+        <div class="section-heading"><div><span class="eyebrow">ORGANISATION</span><h2>Mes tâches</h2></div><button class="primary-btn" data-action="add-task">＋ Ajouter</button></div>
+        <div class="filter-row" id="taskFilters"><button class="selected" data-filter="all">Toutes</button><button data-filter="today">Aujourd’hui</button><button data-filter="upcoming">À venir</button><button data-filter="late">En retard</button><button data-filter="done">Terminées</button></div>
+        <div id="taskList" class="stack"></div>
+      </section>
+
+      <section class="view" id="view-notes">
+        <div class="section-heading"><div><span class="eyebrow">MÉMOIRE</span><h2>Mes notes</h2></div><button class="primary-btn" data-action="add-note">＋ Note</button></div>
+        <input class="search-input" id="noteSearch" placeholder="Rechercher une note…">
+        <div id="noteList" class="note-grid"></div>
+      </section>
+
+      <section class="view" id="view-habits">
+        <div class="section-heading"><div><span class="eyebrow">RÉGULARITÉ</span><h2>Habitudes</h2></div><button class="primary-btn" data-action="add-habit">＋ Habitude</button></div>
+        <p class="muted">Coche chaque habitude lorsque tu l’as réalisée aujourd’hui.</p>
+        <div id="habitList" class="stack"></div>
+      </section>
+
+      <section class="view" id="view-goals">
+        <div class="section-heading"><div><span class="eyebrow">CAP À SUIVRE</span><h2>Mes objectifs</h2></div><button class="primary-btn" data-action="add-goal">＋ Objectif</button></div>
+        <div id="goalList" class="stack"></div>
+      </section>
+
+      <section class="view" id="view-expenses">
+        <div class="section-heading"><div><span class="eyebrow">SUIVI PERSONNEL</span><h2>Dépenses</h2></div><button class="primary-btn" data-action="add-expense">＋ Dépense</button></div>
+        <div class="welcome-card expense-total"><div><span class="eyebrow">TOTAL ENREGISTRÉ</span><h2 id="expenseTotal">0,00 €</h2><p>Ce mois-ci</p></div><span class="big-symbol">€</span></div>
+        <div id="expenseList" class="stack"></div>
+      </section>
+
+      <section class="view" id="view-focus">
+        <div class="section-heading"><div><span class="eyebrow">SE CONCENTRER</span><h2>Minuteur</h2></div></div>
+        <div class="focus-card">
+          <span class="eyebrow">SESSION DE CONCENTRATION</span>
+          <div class="timer" id="timerDisplay">25:00</div>
+          <p class="muted" id="timerStatus">Prêt quand tu l’es.</p>
+          <div class="timer-controls"><button class="primary-btn" id="timerStart">Démarrer</button><button class="secondary-btn" id="timerReset">Réinitialiser</button></div>
+          <div class="timer-presets"><button data-minutes="15">15 min</button><button class="selected" data-minutes="25">25 min</button><button data-minutes="45">45 min</button><button data-minutes="60">60 min</button></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-settings">
+        <div class="section-heading"><div><span class="eyebrow">PERSONNALISATION</span><h2>Paramètres</h2></div></div>
+        <article class="panel">
+          <h3>Apparence</h3>
+          <label class="setting-row">Thème<select id="themeSelect"><option value="dark">Sombre</option><option value="light">Clair</option><option value="system">Système</option></select></label>
+          <label class="setting-row">Premier jour de la semaine<select id="weekStart"><option value="1">Lundi</option><option value="0">Dimanche</option></select></label>
+          <label class="setting-row">Devise<select id="currency"><option value="EUR">Euro (€)</option><option value="USD">Dollar ($)</option><option value="GBP">Livre (£)</option></select></label>
+        </article>
+        <article class="panel">
+          <h3>Notifications</h3>
+          <p class="muted">Les rappels affichés dans l’application fonctionnent localement. Les notifications système programmées sur iPhone nécessitent une version installée compatible et une configuration supplémentaire.</p>
+          <button class="secondary-btn full" id="notificationPermission">Autoriser les notifications</button>
+          <label class="setting-row">Rappel par défaut<select id="defaultReminder"><option value="0">Aucun</option><option value="10">10 minutes avant</option><option value="30">30 minutes avant</option><option value="60">1 heure avant</option><option value="1440">1 jour avant</option><option value="10080">1 semaine avant</option></select></label>
+          <label class="setting-row">Vérifier les rappels dans l’application<input type="checkbox" id="inAppReminders" checked></label>
+          <p id="notificationStatus" class="small muted"></p>
+        </article>
+        <article class="panel">
+          <h3>Données</h3>
+          <p class="muted">Tes informations sont enregistrées sur cet appareil dans le navigateur. Pense à exporter une sauvegarde.</p>
+          <div class="button-row"><button class="secondary-btn" id="exportData">Exporter mes données</button><label class="secondary-btn file-label">Importer<input type="file" id="importData" accept="application/json"></label></div>
+          <button class="danger-btn full" id="clearData">Tout effacer</button>
+        </article>
+        <article class="panel">
+          <h3>À propos</h3><p class="muted">Mon Agenda · Version personnelle 1.0<br>Projet local, sans compte utilisateur.</p>
+        </article>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navigation principale">
+      <button class="nav-item active" data-view="home"><span>⌂</span><small>Accueil</small></button>
+      <button class="nav-item" data-view="calendar"><span>▦</span><small>Agenda</small></button>
+      <button class="nav-item" data-view="tasks"><span>☑</span><small>Tâches</small></button>
+      <button class="nav-item" data-view="notes"><span>✎</span><small>Notes</small></button>
+      <button class="nav-item" data-view="more"><span>•••</span><small>Plus</small></button>
+    </nav>
+  </div>
+
+  <dialog id="editorDialog">
+    <form method="dialog" id="editorForm">
+      <div class="dialog-head"><div><span class="eyebrow" id="editorEyebrow">NOUVEAU</span><h2 id="editorTitle">Ajouter</h2></div><button class="icon-btn" value="cancel" aria-label="Fermer">×</button></div>
+      <div id="editorFields" class="form-fields"></div>
+      <div class="dialog-actions"><button type="button" class="secondary-btn" id="deleteItem" hidden>Supprimer</button><span></span><button type="button" class="secondary-btn" id="cancelEditor">Annuler</button><button type="submit" class="primary-btn">Enregistrer</button></div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>

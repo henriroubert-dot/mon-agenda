@@ -1,0 +1,10 @@
+{
+  "name": "Mon Agenda",
+  "short_name": "Agenda",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#11131a",
+  "theme_color": "#171923",
+  "description": "Ton agenda personnel et tes tâches."
+}
